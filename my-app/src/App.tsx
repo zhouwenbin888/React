@@ -7,7 +7,7 @@ import Demo4 from "./Demo4";
 
 function App() {
  
-  const name = 'zwbzwbwbhu'
+  const name = 'zwbzwbzwb'
   const [msg, setMsg] = useState('')
   const getmsg = (msg: string) => {
     console.log(msg)
