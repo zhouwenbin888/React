@@ -2,6 +2,7 @@ import { useState, createContext } from "react";
 import Demo3 from "./Demo3";
 import Demo2 from "./Demo2";
 import Demo4 from "./Demo4";
+import Demo6 from "./Demo6";
 
  const Context = createContext<string>('');
 
@@ -16,7 +17,7 @@ function App() {
 
   return (
     <div className="App">
-      <Demo2 name={msg} />
+      {/* <Demo2 name={msg} />
       <Context.Provider value={msg}>
         <Demo4 />
       </Context.Provider>
@@ -30,7 +31,8 @@ function App() {
         obj={{ name: 'jack' }}
         cb={getmsg}
         child={<span>8888</span>}
-      ><span>oo</span></Demo3>
+      ><span>oo</span></Demo3> */}
+      <Demo6 />
     </div>
   );
 }

@@ -86,7 +86,23 @@ const Demo2 = (props: Demo2Props) => {
             setCommentList(_.orderBy(commentList, 'ctime', 'desc'))
         }
     }
-
+    const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+        if (event.key === 'Enter') {
+            setCommentList([...commentList, {
+                rpid: uuidV4(),
+                user: {
+                    uid: '30009257',
+                    avatar: 'logo192.png',
+                    uname: props.name,
+                },
+                content: value,
+                ctime: dayjs(new Date()).format('MM-DD hh:mm'),
+                like: 66,
+            }])
+            setValue('')
+            inputRef.current?.focus()
+        }
+    };
     const handleComment = () => {
         console.log(props.name)
         setCommentList([...commentList, {
@@ -139,6 +155,7 @@ const Demo2 = (props: Demo2Props) => {
                             value={value}
                             ref={inputRef}
                             onChange={(e) => setValue(e.target.value)}
+                            onKeyDown={handleKeyDown}
                         />
                         <div className="reply-box-send">
                             <div className="send-text" onClick={handleComment}>发布</div>
