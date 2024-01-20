@@ -29,7 +29,7 @@ function Button() {
   return <button>dd</button>
 }
 
-function Demo() {
+function Demo1() {
   const [count, setCount] = useState(0)
   const [from, setfrom] = useState({ name: 'jack' })
   const handClick1 = () => {
@@ -70,4 +70,4 @@ function Demo() {
   );
 }
 
-export default Demo;
+export default Demo1;

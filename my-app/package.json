@@ -10,8 +10,10 @@
     "@types/node": "^16.18.72",
     "@types/react": "^18.2.48",
     "@types/react-dom": "^18.2.18",
+    "axios": "^1.6.5",
     "classnames": "^2.5.1",
     "dayjs": "^1.11.10",
+    "json-server": "^1.0.0-alpha.21",
     "lodash": "^4.17.21",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
@@ -24,7 +26,8 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "serve": "json-server _db.json --port 3001"
   },
   "eslintConfig": {
     "extends": [

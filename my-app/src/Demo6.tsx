@@ -6,6 +6,17 @@ interface Channel {
   id: number;
   name: string;
 }
+function Son() {
+  useEffect(() => {
+    const timer = setInterval(() => {
+      console.log('定时器执行中')
+    }, 1000)
+    return () => {
+      clearInterval(timer)
+    }
+  }, [])
+  return (<div></div>)
+}
 
 function Demo6() {
   const [list, setList] = useState<Channel[]>([]);
@@ -20,7 +31,7 @@ function Demo6() {
     getList();
     console.log(list);
   }, []);
-
+  const [show, setshow] = useState(true)
   return (
     <div>
       <ul>
@@ -28,6 +39,10 @@ function Demo6() {
           <li key={item.id}>{item.name}</li>
         ))}
       </ul>
+      <div>
+        {show && <Son />}
+        <button onClick={() => setshow(false)}>卸载</button>
+      </div>
     </div>
   );
 }

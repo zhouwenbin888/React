@@ -1,24 +1,21 @@
 import { useState, createContext } from "react";
+import Demo1 from "./Demo1";
+import Bilibilicomment from "./Bilibilicomment";
 import Demo3 from "./Demo3";
-import Demo2 from "./Demo2";
 import Demo4 from "./Demo4";
 import Demo6 from "./Demo6";
+import Demo7 from "./Demo7";
 
- const Context = createContext<string>('');
+
+const Context = createContext<string>('');
 
 function App() {
- 
   const name = 'zwbzwbzwb'
-  const [msg, setMsg] = useState('')
-  const getmsg = (msg: string) => {
-    console.log(msg)
-    setMsg(msg)
-  }
-
   return (
     <div className="App">
-      {/* <Demo2 name={msg} />
-      <Context.Provider value={msg}>
+      {/* <Demo1/> */}
+      <Bilibilicomment name={name} />
+      {/* <Context.Provider value={msg}>
         <Demo4 />
       </Context.Provider>
 
@@ -31,11 +28,12 @@ function App() {
         obj={{ name: 'jack' }}
         cb={getmsg}
         child={<span>8888</span>}
-      ><span>oo</span></Demo3> */}
+      ><span>oo</span></Demo3>
       <Demo6 />
+      <Demo7 /> */}
     </div>
   );
 }
 
 export default App;
-export {Context}
+export { Context }

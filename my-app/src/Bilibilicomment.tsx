@@ -1,75 +1,37 @@
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import './Demo2.css'
 import _ from 'lodash'
 import classnames from 'classnames'
 import { v4 as uuidV4 } from 'uuid'
 import dayjs from 'dayjs'
-
-interface User {
-    uid: string,
-    avatar: string,
-    uname: string,
-}
-
-interface Comment {
-    rpid: string
-    user: User,
-    content: string,
-    ctime: string,
-    like: number,
-}
-
-const defaultList: Comment[] = [
-    {
-        rpid: '3',
-        user: {
-            uid: '13258165',
-            avatar: 'logo192.png',
-            uname: '周杰伦',
-        },
-        content: '哎哟，不错哦',
-        ctime: '10-18 08:15',
-        like: 88,
-    },
-    {
-        rpid: '2',
-        user: {
-            uid: '36080105',
-            avatar: 'logo192.png',
-            uname: '许嵩',
-        },
-        content: '我寻你千百度 日出到迟暮',
-        ctime: '11-13 11:29',
-        like: 888,
-    },
-    {
-        rpid: '1',
-        user: {
-            uid: '30009257',
-            avatar: 'logo192.png',
-            uname: '黑马前端',
-        },
-        content: '学前端就来黑马',
-        ctime: '10-19 09:00',
-        like: 66,
-    },
-]
+import axios from 'axios'
+import BilibiliItem from './BilibiliItem'
+import { li,User,Comment ,Bprops} from './Binterface'
 
 const user: User = {
     uid: '30009257',
     avatar: '',
     uname: '黑马前端',
 }
-
 const tabs = [
     { type: 'hot', text: '最热' },
     { type: 'time', text: '最新' },
 ]
-interface Demo2Props {
-    name: string;
+
+function useGetlist() {
+    const [commentList, setCommentList] = useState<Comment[]>([])
+    useEffect(() => {
+        async function getList() {
+            const res = await axios.get('http://localhost:3001/list')
+            setCommentList(_.orderBy(res.data,'like','desc'))
+        }
+        getList()
+    }, [])
+    return { commentList, setCommentList }
 }
-const Demo2 = (props: Demo2Props) => {
-    const [commentList, setCommentList] = useState<Comment[]>(_.orderBy(defaultList, 'like', 'desc'))
+
+const Demo2 = (props: Bprops) => {
+    const { commentList, setCommentList } = useGetlist()
     const [value, setValue] = useState<string>('')
     const [type, setType] = useState<string>('hot')
     const inputRef = useRef<HTMLInputElement>(null)
@@ -145,7 +107,7 @@ const Demo2 = (props: Demo2Props) => {
                 <div className="box-normal">
                     <div className="reply-box-avatar">
                         <div className="bili-avatar">
-                            <img className="bili-avatar-img" src="logo192.png" alt="用户头像" />
+                            <img className="bili-avatar-img" src="http://toutiao.itheima.net/resources/images/98.jpg" alt="用户头像" />
                         </div>
                     </div>
                     <div className="reply-box-wrap">
@@ -163,32 +125,7 @@ const Demo2 = (props: Demo2Props) => {
                     </div>
                 </div>
                 <div className="reply-list">
-                    {commentList.map(item => (
-                        <div className="reply-item" key={item.rpid}>
-                            <div className="root-reply-avatar">
-                                <div className="bili-avatar">
-                                    <img className="bili-avatar-img" src={item.user.avatar} alt="用户头像" />
-                                </div>
-                            </div>
-                            <div className="content-wrap">
-                                <div className="user-info">
-                                    <div className="user-name">{item.user.uname}</div>
-                                </div>
-                                <div className="root-reply">
-                                    <span className="reply-content">{item.content}</span>
-                                    <div className="reply-info">
-                                        <span className="reply-time">{item.ctime}</span>
-                                        <span className="reply-time">点赞数:{item.like}</span>
-                                        {user.uid === item.user.uid && (
-                                            <span className="delete-btn" onClick={() => handleDelete(item.rpid)}>
-                                                删除
-                                            </span>
-                                        )}
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    ))}
+                    {commentList.map(item => (<BilibiliItem key={item.rpid} user={user} item={item} handleDelete={handleDelete} />))}
                 </div>
             </div>
         </div>
