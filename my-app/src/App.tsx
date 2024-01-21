@@ -1,6 +1,6 @@
 import { useState, createContext } from "react";
-import Demo1 from "./Demo1";
 import Bilibilicomment from "./Bilibilicomment";
+import Demo1 from "./Demo1";
 import Demo3 from "./Demo3";
 import Demo4 from "./Demo4";
 import Demo6 from "./Demo6";
@@ -13,12 +13,11 @@ function App() {
   const name = 'zwbzwbzwb'
   return (
     <div className="App">
-      {/* <Demo1/> */}
       <Bilibilicomment name={name} />
+      {/* <Demo1/> */}
       {/* <Context.Provider value={msg}>
         <Demo4 />
       </Context.Provider>
-
       <div>{msg}</div>
       <Demo3
         name={name}

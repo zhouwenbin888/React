@@ -1,6 +1,10 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { li } from './Binterface'
 const BilibiliItem = ({ user, item, handleDelete }: li) => {
+    const [count, setCount] = useState(item.like)
+    const newcount = () => {
+        setCount(count + 1)
+    }
     return (<div className="reply-item">
         <div className="root-reply-avatar">
             <div className="bili-avatar">
@@ -15,8 +19,9 @@ const BilibiliItem = ({ user, item, handleDelete }: li) => {
                 <span className="reply-content">{item.content}</span>
                 <div className="reply-info">
                     <span className="reply-time">{item.ctime}</span>
-                    <span className="reply-time">点赞数:{item.like}</span>
-                    {user.uid === item.user.uid && (<span className="delete-btn" onClick={() => handleDelete(item.rpid)}>删除</span>)}
+                    <span className="reply-time">点赞数:{count}</span>
+                    {user.uid === item.user.uid ? <span className="delete-btn" onClick={() => handleDelete(item.rpid)}>删除</span> : <span className='support-btn' onClick={newcount}>点赞</span>
+                    }
                 </div>
             </div>
         </div>

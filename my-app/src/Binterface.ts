@@ -15,6 +15,6 @@ export interface li {
     item: Comment
     handleDelete: (id: string) => void
 }
-export interface Bprops{
-    name:string
+export interface Bprops {
+    name: string
 }

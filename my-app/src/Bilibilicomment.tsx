@@ -1,12 +1,12 @@
 import { useEffect, useRef, useState } from 'react'
-import './Demo2.css'
+import './Bilibili.css'
 import _ from 'lodash'
 import classnames from 'classnames'
 import { v4 as uuidV4 } from 'uuid'
 import dayjs from 'dayjs'
 import axios from 'axios'
 import BilibiliItem from './BilibiliItem'
-import { li,User,Comment ,Bprops} from './Binterface'
+import { User, Comment, Bprops } from './Binterface'
 
 const user: User = {
     uid: '30009257',
@@ -23,7 +23,7 @@ function useGetlist() {
     useEffect(() => {
         async function getList() {
             const res = await axios.get('http://localhost:3001/list')
-            setCommentList(_.orderBy(res.data,'like','desc'))
+            setCommentList(_.orderBy(res.data, 'like', 'desc'))
         }
         getList()
     }, [])
@@ -35,7 +35,7 @@ const Demo2 = (props: Bprops) => {
     const [value, setValue] = useState<string>('')
     const [type, setType] = useState<string>('hot')
     const inputRef = useRef<HTMLInputElement>(null)
-
+    
     const handleDelete = (id: string) => {
         setCommentList(commentList.filter(item => item.rpid !== id))
     }
@@ -54,32 +54,33 @@ const Demo2 = (props: Bprops) => {
                 rpid: uuidV4(),
                 user: {
                     uid: '30009257',
-                    avatar: 'logo192.png',
+                    avatar: 'http://toutiao.itheima.net/resources/images/98.jpg',
                     uname: props.name,
                 },
                 content: value,
-                ctime: dayjs(new Date()).format('MM-DD hh:mm'),
-                like: 66,
+                ctime: dayjs(new Date()).format('YYYY-MM-DD hh:mm'),
+                like: 0,
             }])
             setValue('')
             inputRef.current?.focus()
         }
     };
     const handleComment = () => {
-        console.log(props.name)
-        setCommentList([...commentList, {
-            rpid: uuidV4(),
-            user: {
-                uid: '30009257',
-                avatar: 'logo192.png',
-                uname: props.name,
-            },
-            content: value,
-            ctime: dayjs(new Date()).format('MM-DD hh:mm'),
-            like: 66,
-        }])
-        setValue('')
-        inputRef.current?.focus()
+        if (value !== '') {
+            setCommentList([...commentList, {
+                rpid: uuidV4(),
+                user: {
+                    uid: '30009257',
+                    avatar: 'http://toutiao.itheima.net/resources/images/98.jpg',
+                    uname: props.name,
+                },
+                content: value,
+                ctime: dayjs(new Date()).format('YYYY-MM-DD hh:mm'),
+                like: 0,
+            }])
+            setValue('')
+            inputRef.current?.focus()
+        }
     }
 
     return (
@@ -125,7 +126,7 @@ const Demo2 = (props: Bprops) => {
                     </div>
                 </div>
                 <div className="reply-list">
-                    {commentList.map(item => (<BilibiliItem key={item.rpid} user={user} item={item} handleDelete={handleDelete} />))}
+                    {commentList.map(item => (<BilibiliItem key={item.rpid} user={user} item={item}  handleDelete={handleDelete} />))}
                 </div>
             </div>
         </div>
