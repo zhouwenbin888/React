@@ -44,7 +44,7 @@ const Bilibilicomment = (props: Bprops) => {
                 uname: props.name,
             },
             content: value,
-            ctime: dayjs(new Date()).format('YYYY-MM-DD hh:mm'),
+            ctime: dayjs(new Date()).format('YYYY-MM-DD hh:mm:ss'),
             like: 0,
         } 
         setValue('');
