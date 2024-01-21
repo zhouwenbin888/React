@@ -2,8 +2,12 @@ import React, { useState } from 'react'
 import { li } from './Binterface'
 const BilibiliItem = ({ user, item, handleDelete }: li) => {
     const [count, setCount] = useState(item.like)
+    const [isClicked, setIsClicked] = useState(true);
     const newcount = () => {
-        setCount(count + 1)
+        if(isClicked){
+            setCount(count + 1) 
+            setIsClicked(!isClicked)
+        }
     }
     return (<div className="reply-item">
         <div className="root-reply-avatar">
