@@ -1,21 +1,21 @@
 import { useState, createContext } from "react";
 import Bilibilicomment from "./Bilibilicomment";
-import Demo1 from "./Demo1";
-import Demo3 from "./Demo3";
-import Demo4 from "./Demo4";
-import Demo6 from "./Demo6";
-import Demo7 from "./Demo7";
+// import Demo1 from "./Demo1";
+// import Demo3 from "./Demo3";
+// import Demo4 from "./Demo4";
+// import Demo6 from "./Demo6";
+// import Demo7 from "./Demo7";
 
 
-const Context = createContext<string>('');
+// const Context = createContext<string>('');
 
 function App() {
   const name = 'zwbzwbzwb'
   return (
     <div className="App">
       <Bilibilicomment name={name} />
-      {/* <Demo1/> */}
-      {/* <Context.Provider value={msg}>
+      {/* <Demo1/>
+      <Context.Provider value={msg}>
         <Demo4 />
       </Context.Provider>
       <div>{msg}</div>
@@ -35,4 +35,4 @@ function App() {
 }
 
 export default App;
-export { Context }
+// export { Context }

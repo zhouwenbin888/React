@@ -30,12 +30,29 @@ function useGetlist() {
     return { commentList, setCommentList }
 }
 
-const Demo2 = (props: Bprops) => {
+const Bilibilicomment = (props: Bprops) => {
     const { commentList, setCommentList } = useGetlist()
     const [value, setValue] = useState<string>('')
     const [type, setType] = useState<string>('hot')
     const inputRef = useRef<HTMLInputElement>(null)
-    
+    const update=()=>{
+        const newComment={
+            rpid: uuidV4(),
+            user: {
+                uid: '30009257',
+                avatar: 'http://toutiao.itheima.net/resources/images/98.jpg',
+                uname: props.name,
+            },
+            content: value,
+            ctime: dayjs(new Date()).format('YYYY-MM-DD hh:mm'),
+            like: 0,
+        } 
+        setValue('');
+        inputRef.current?.focus();
+        setCommentList([...commentList, newComment]);
+        const sortedCommentList = _.orderBy([...commentList, newComment],type === 'hot' ? 'like' : 'ctime','desc');
+        setCommentList(sortedCommentList);
+    }
     const handleDelete = (id: string) => {
         setCommentList(commentList.filter(item => item.rpid !== id))
     }
@@ -50,36 +67,13 @@ const Demo2 = (props: Bprops) => {
     }
     const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
         if (event.key === 'Enter') {
-            setCommentList([...commentList, {
-                rpid: uuidV4(),
-                user: {
-                    uid: '30009257',
-                    avatar: 'http://toutiao.itheima.net/resources/images/98.jpg',
-                    uname: props.name,
-                },
-                content: value,
-                ctime: dayjs(new Date()).format('YYYY-MM-DD hh:mm'),
-                like: 0,
-            }])
-            setValue('')
-            inputRef.current?.focus()
+           update()
         }
     };
+
     const handleComment = () => {
         if (value !== '') {
-            setCommentList([...commentList, {
-                rpid: uuidV4(),
-                user: {
-                    uid: '30009257',
-                    avatar: 'http://toutiao.itheima.net/resources/images/98.jpg',
-                    uname: props.name,
-                },
-                content: value,
-                ctime: dayjs(new Date()).format('YYYY-MM-DD hh:mm'),
-                like: 0,
-            }])
-            setValue('')
-            inputRef.current?.focus()
+            update()
         }
     }
 
@@ -121,16 +115,16 @@ const Demo2 = (props: Bprops) => {
                             onKeyDown={handleKeyDown}
                         />
                         <div className="reply-box-send">
-                            <div className="send-text" onClick={handleComment}>发布</div>
+                            <div className="send-text" onClick={handleComment} >发布</div>
                         </div>
                     </div>
                 </div>
                 <div className="reply-list">
-                    {commentList.map(item => (<BilibiliItem key={item.rpid} user={user} item={item}  handleDelete={handleDelete} />))}
+                    {commentList.map(item => (<BilibiliItem key={item.rpid} user={user} item={item} handleDelete={handleDelete} />))}
                 </div>
             </div>
         </div>
     )
 }
 
-export default Demo2;
+export default Bilibilicomment;

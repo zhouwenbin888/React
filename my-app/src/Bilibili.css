@@ -34,7 +34,6 @@
   font-size: 13px;
 }
 
-
 .nav-sort {
   display: flex;
   align-items: center;
@@ -117,7 +116,6 @@
     border-color: #c9ccd0;
   }
 }
-
 
 .reply-box-send {
   position: relative;
@@ -222,7 +220,6 @@
   cursor: pointer;
 }
 
-
 .root-reply {
   position: relative;
   padding: 2px 0;
@@ -249,8 +246,6 @@
   margin-right: 20px;
 }
 
-
-
 .support-btn {
   margin-right: 40px;
   cursor: pointer;
@@ -260,8 +255,6 @@
   }
 }
 
-
-
 .delete-btn {
   margin-right: 40px;
   cursor: pointer;
@@ -269,8 +262,6 @@
     color: #00aeec;
   }
 }
-
-
 
 .reply-none {
   height: 64px;
