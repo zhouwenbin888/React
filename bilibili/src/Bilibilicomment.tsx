@@ -11,7 +11,7 @@ import { User, Comment, Bprops } from './Binterface'
 const user: User = {
     uid: '30009257',
     avatar: '',
-    uname: '黑马前端',
+    uname: 'zwbzwb',
 }
 const tabs = [
     { type: 'hot', text: '最热' },
