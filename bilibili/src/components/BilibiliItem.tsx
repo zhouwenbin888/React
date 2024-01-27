@@ -1,14 +1,18 @@
-import React, { useState } from 'react'
+import{ useState } from 'react'
 import { li } from './Binterface'
+//从父组件中解构出传来的user, item, handleDelete
 const BilibiliItem = ({ user, item, handleDelete }: li) => {
+
     const [count, setCount] = useState(item.like)
     const [isClicked, setIsClicked] = useState(true);
+
     const newcount = () => {
         if(isClicked){
             setCount(count + 1) 
             setIsClicked(!isClicked)
         }
     }
+    
     return (<div className="reply-item">
         <div className="root-reply-avatar">
             <div className="bili-avatar">

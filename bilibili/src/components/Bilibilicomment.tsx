@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import './Bilibili.css'
+import '../css/Bilibili.css'
 import _ from 'lodash'
 import classnames from 'classnames'
 import { v4 as uuidV4 } from 'uuid'
@@ -11,7 +11,7 @@ import { User, Comment, Bprops } from './Binterface'
 const user: User = {
     uid: '30009257',
     avatar: '',
-    uname: 'zwbzwb',
+    uname: 'hubu',
 }
 const tabs = [
     { type: 'hot', text: '最热' },

@@ -1,9 +1,5 @@
-//项目的入口
-
-import React from 'react';
-import ReactDOM from 'react-dom/client';//两个核心包
-
-import App from './App';//导入项目的根组件
+import ReactDOM from 'react-dom/client'
+import App from './App'
 
 
 const root = ReactDOM.createRoot(
