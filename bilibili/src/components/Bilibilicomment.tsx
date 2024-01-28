@@ -6,11 +6,11 @@ import { v4 as uuidV4 } from 'uuid'
 import dayjs from 'dayjs'
 import axios from 'axios'
 import BilibiliItem from './BilibiliItem'
-import { User, Comment, Bprops } from './Binterface'
+import { User, Comment } from './Binterface'
 
 const user: User = {
     uid: '30009257',
-    avatar: '',
+    avatar: "http://toutiao.itheima.net/resources/images/98.jpg",
     uname: 'hubu',
 }
 const tabs = [
@@ -30,7 +30,7 @@ function useGetlist() {
     return { commentList, setCommentList }
 }
 
-const Bilibilicomment = (props: Bprops) => {
+const Bilibilicomment = () => {
     const { commentList, setCommentList } = useGetlist()
     const [value, setValue] = useState<string>('')
     const [type, setType] = useState<string>('hot')
@@ -38,18 +38,13 @@ const Bilibilicomment = (props: Bprops) => {
     const update=()=>{
         const newComment={
             rpid: uuidV4(),
-            user: {
-                uid: '30009257',
-                avatar: 'http://toutiao.itheima.net/resources/images/98.jpg',
-                uname: props.name,
-            },
+            user:user,
             content: value,
             ctime: dayjs(new Date()).format('YYYY-MM-DD hh:mm:ss'),
             like: 0,
         } 
         setValue('');
         inputRef.current?.focus();
-        setCommentList([...commentList, newComment]);
         const sortedCommentList = _.orderBy([...commentList, newComment],type === 'hot' ? 'like' : 'ctime','desc');
         setCommentList(sortedCommentList);
     }

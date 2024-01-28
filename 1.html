@@ -6,12 +6,14 @@
     <title>Document</title>
 </head>
 <body>
-    <div style="display: flex;
-    justify-content: space-between;
-    padding: 10px 10px;
- ">
-       <span>你好</span>
-       <span>再见</span>
-    </div>
+ <script src="http://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+ <script>
+    axios({
+        url:'http://hmajax.itheima.net/api/city',
+        params:{
+            pname:'福建省'
+        }
+    }).then((result)=>{console.log(result.data.list)})
+ </script>
 </body>
 </html>

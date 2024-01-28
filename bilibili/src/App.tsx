@@ -1,10 +1,9 @@
 import Bilibilicomment from "./components/Bilibilicomment";
 
 function App() {
-  const name = 'hubu'
   return (
     <div className="App">
-      <Bilibilicomment name={name} />
+      <Bilibilicomment />
     </div>
   );
 }
