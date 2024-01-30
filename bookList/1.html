@@ -11,7 +11,6 @@
 <script src="./lib/form-serialize.js"></script>
 
 <body>
-
     <div class="data">
         <div class="butt">
             <button class="add">添加</button>
@@ -59,15 +58,15 @@
 <script>
     const creator = '老周';
 
-function getBookList() {
-  axios.get('http://hmajax.itheima.net/api/books', {
-    params: {
-      creator: creator
-    }
-  }).then(res => {
-    const data = res.data.data;
-    const str = data.map((item, index) => {
-      return `
+    function getBookList() {
+        axios.get('http://hmajax.itheima.net/api/books', {
+            params: {
+                creator: creator
+            }
+        }).then(res => {
+            const data = res.data.data;
+            const str = data.map((item, index) => {
+                return `
         <tr>
           <td>${index + 1}</td>
           <td>${item.bookname}</td>
@@ -79,101 +78,101 @@ function getBookList() {
           </td>
         </tr>
       `;
-    }).join('');
-    document.querySelector('.list').innerHTML = str;
-  }).catch(error => {
-    console.log(error);
-  });
-}
+            }).join('');
+            document.querySelector('.list').innerHTML = str;
+        }).catch(error => {
+            console.log(error);
+        });
+    }
 
-function addBook() {
-  const addForm = document.querySelector('.xzts');
-  const bookadd = serialize(addForm, { hash: true, empty: false });
-  axios.post('http://hmajax.itheima.net/api/books', {
-    ...bookadd,
-    creator
-  }).then(res => {
-    console.log(res);
-    getBookList();
-  }).catch(error => {
-    console.log(error);
-  });
-  document.querySelector('.fom1').style.display = 'none';
-}
+    function addBook() {
+        const addForm = document.querySelector('.xzts');
+        const bookadd = serialize(addForm, { hash: true, empty: false });
+        axios.post('http://hmajax.itheima.net/api/books', {
+            ...bookadd,
+            creator
+        }).then(res => {
+            console.log(res);
+            getBookList();
+        }).catch(error => {
+            console.log(error);
+        });
+        document.querySelector('.fom1').style.display = 'none';
+    }
 
-function editBook(id) {
-  axios.get(`http://hmajax.itheima.net/api/books/${id}`).then(res => {
-    const bookObj = res.data.data;
-    const key = Object.keys(bookObj);
-    key.forEach(key => {
-      document.querySelector(`.bjts .${key}`).value = bookObj[key];
+    function editBook(id) {
+        axios.get(`http://hmajax.itheima.net/api/books/${id}`).then(res => {
+            const bookObj = res.data.data;
+            const key = Object.keys(bookObj);
+            key.forEach(key => {
+                document.querySelector(`.bjts .${key}`).value = bookObj[key];
+            });
+        });
+        document.querySelector('.fom2').style.display = 'flex';
+    }
+
+    function deleteBook(id) {
+        axios.delete(`http://hmajax.itheima.net/api/books/${id}`).then(res => {
+            console.log(res);
+            getBookList();
+        }).catch(error => {
+            console.log(error);
+        });
+    }
+
+    function updateBook() {
+        const editForm = document.querySelector('.bjts');
+        const { id, bookname, author, publisher } = serialize(editForm, { hash: true, empty: false });
+        axios.put(`http://hmajax.itheima.net/api/books/${id}`, {
+            bookname,
+            author,
+            publisher,
+            creator
+        }).then(res => {
+            console.log(res);
+            getBookList();
+        }).catch(error => {
+            console.log(error);
+        });
+        document.querySelector('.fom2').style.display = 'none';
+    }
+
+    document.querySelector('.add').addEventListener('click', () => {
+        document.querySelector('.fom1').style.display = 'flex';
     });
-  });
-  document.querySelector('.fom2').style.display = 'flex';
-}
 
-function deleteBook(id) {
-  axios.delete(`http://hmajax.itheima.net/api/books/${id}`).then(res => {
-    console.log(res);
+    document.querySelector('.yes1').addEventListener('click', event => {
+        event.preventDefault();
+        addBook();
+    });
+
+    document.querySelector('.no1').addEventListener('click', event => {
+        event.preventDefault();
+        document.querySelector('.fom1').style.display = 'none';
+    });
+
+    document.querySelector('.list').addEventListener('click', e => {
+        if (e.target.classList.contains('sp1')) {
+            const id = e.target.parentNode.dataset.id;
+            editBook(id);
+        }
+        if (e.target.classList.contains('sp2')) {
+            const id = e.target.parentNode.dataset.id;
+            deleteBook(id);
+        }
+    });
+
+    document.querySelector('.yes2').addEventListener('click', event => {
+        event.preventDefault();
+        updateBook();
+    });
+
+    document.querySelector('.no2').addEventListener('click', event => {
+        event.preventDefault();
+        document.querySelector('.fom2').style.display = 'none';
+    });
+
     getBookList();
-  }).catch(error => {
-    console.log(error);
-  });
-}
-
-function updateBook() {
-  const editForm = document.querySelector('.bjts');
-  const { id, bookname, author, publisher } = serialize(editForm, { hash: true, empty: false });
-  axios.put(`http://hmajax.itheima.net/api/books/${id}`, {
-    bookname,
-    author,
-    publisher,
-    creator
-  }).then(res => {
-    console.log(res);
-    getBookList();
-  }).catch(error => {
-    console.log(error);
-  });
-  document.querySelector('.fom2').style.display = 'none';
-}
-
-document.querySelector('.add').addEventListener('click', () => {
-  document.querySelector('.fom1').style.display = 'flex';
-});
-
-document.querySelector('.yes1').addEventListener('click', event => {
-  event.preventDefault();
-  addBook();
-});
-
-document.querySelector('.no1').addEventListener('click', event => {
-  event.preventDefault();
-  document.querySelector('.fom1').style.display = 'none';
-});
-
-document.querySelector('.list').addEventListener('click', e => {
-  if (e.target.classList.contains('sp1')) {
-    const id = e.target.parentNode.dataset.id;
-    editBook(id);
-  }
-  if (e.target.classList.contains('sp2')) {
-    const id = e.target.parentNode.dataset.id;
-    deleteBook(id);
-  }
-});
-
-document.querySelector('.yes2').addEventListener('click', event => {
-  event.preventDefault();
-  updateBook();
-});
-
-document.querySelector('.no2').addEventListener('click', event => {
-  event.preventDefault();
-  document.querySelector('.fom2').style.display = 'none';
-});
-
-getBookList();
 
 </script>
 <style>
