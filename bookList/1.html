@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<script src="http://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.min.js"></script>
+<script src="./lib/form-serialize.js"></script>
+
+<body>
+
+    <div class="data">
+        <div class="butt">
+            <button class="add">添加</button>
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th>序号</th>
+                    <th>书名</th>
+                    <th>作者</th>
+                    <th>出版社</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tbody class="list">
+            </tbody>
+        </table>
+    </div>
+    <div class="fom1">
+        <form class="xzts">
+            <span>新增图书</span>
+            <div class="bookName"><span>书名</span><input type="text" name="bookname" /></div>
+            <div class="auThor"><span>作者</span><input type="text" name="author" /></div>
+            <div class="puBlisher"><span>出版社</span><input type="text" name="publisher" /></div>
+            <div class="confirm">
+                <button class="yes1">确认</button>
+                <button class="no1">取消</button>
+            </div>
+        </form>
+    </div>
+    <div class="fom2">
+        <form class="bjts">
+            <input type="hidden" class="id" name="id">
+            <span>编辑图书</span>
+            <div class="bookName"><span>书名</span><input type="text" name="bookname" class="bookname" /></div>
+            <div class="auThor"><span>作者</span><input type="text" name="author" class="author" /></div>
+            <div class="puBlisher"><span>出版社</span><input type="text" name="publisher" class="publisher" /></div>
+            <div class="confirm">
+                <button class="yes2">确认</button>
+                <button class="no2">取消</button>
+            </div>
+        </form>
+    </div>
+</body>
+<script>
+    const creator = '老周';
+
+function getBookList() {
+  axios.get('http://hmajax.itheima.net/api/books', {
+    params: {
+      creator: creator
+    }
+  }).then(res => {
+    const data = res.data.data;
+    const str = data.map((item, index) => {
+      return `
+        <tr>
+          <td>${index + 1}</td>
+          <td>${item.bookname}</td>
+          <td>${item.author}</td>
+          <td>${item.publisher}</td>
+          <td data-id=${item.id}>
+            <span class="sp1">编辑</span>
+            <span class="sp2">删除</span>
+          </td>
+        </tr>
+      `;
+    }).join('');
+    document.querySelector('.list').innerHTML = str;
+  }).catch(error => {
+    console.log(error);
+  });
+}
+
+function addBook() {
+  const addForm = document.querySelector('.xzts');
+  const bookadd = serialize(addForm, { hash: true, empty: false });
+  axios.post('http://hmajax.itheima.net/api/books', {
+    ...bookadd,
+    creator
+  }).then(res => {
+    console.log(res);
+    getBookList();
+  }).catch(error => {
+    console.log(error);
+  });
+  document.querySelector('.fom1').style.display = 'none';
+}
+
+function editBook(id) {
+  axios.get(`http://hmajax.itheima.net/api/books/${id}`).then(res => {
+    const bookObj = res.data.data;
+    const key = Object.keys(bookObj);
+    key.forEach(key => {
+      document.querySelector(`.bjts .${key}`).value = bookObj[key];
+    });
+  });
+  document.querySelector('.fom2').style.display = 'flex';
+}
+
+function deleteBook(id) {
+  axios.delete(`http://hmajax.itheima.net/api/books/${id}`).then(res => {
+    console.log(res);
+    getBookList();
+  }).catch(error => {
+    console.log(error);
+  });
+}
+
+function updateBook() {
+  const editForm = document.querySelector('.bjts');
+  const { id, bookname, author, publisher } = serialize(editForm, { hash: true, empty: false });
+  axios.put(`http://hmajax.itheima.net/api/books/${id}`, {
+    bookname,
+    author,
+    publisher,
+    creator
+  }).then(res => {
+    console.log(res);
+    getBookList();
+  }).catch(error => {
+    console.log(error);
+  });
+  document.querySelector('.fom2').style.display = 'none';
+}
+
+document.querySelector('.add').addEventListener('click', () => {
+  document.querySelector('.fom1').style.display = 'flex';
+});
+
+document.querySelector('.yes1').addEventListener('click', event => {
+  event.preventDefault();
+  addBook();
+});
+
+document.querySelector('.no1').addEventListener('click', event => {
+  event.preventDefault();
+  document.querySelector('.fom1').style.display = 'none';
+});
+
+document.querySelector('.list').addEventListener('click', e => {
+  if (e.target.classList.contains('sp1')) {
+    const id = e.target.parentNode.dataset.id;
+    editBook(id);
+  }
+  if (e.target.classList.contains('sp2')) {
+    const id = e.target.parentNode.dataset.id;
+    deleteBook(id);
+  }
+});
+
+document.querySelector('.yes2').addEventListener('click', event => {
+  event.preventDefault();
+  updateBook();
+});
+
+document.querySelector('.no2').addEventListener('click', event => {
+  event.preventDefault();
+  document.querySelector('.fom2').style.display = 'none';
+});
+
+getBookList();
+
+</script>
+<style>
+    body {
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+    }
+
+    .data {
+        display: flex;
+        flex-direction: column;
+    }
+
+    span {
+        font-size: bold;
+    }
+
+    .sp1 {
+        color: rgb(0, 149, 255);
+    }
+
+    .sp2 {
+        color: rgb(255, 56, 56);
+    }
+
+    .add {
+        float: right;
+        color: aliceblue;
+        border: 1 px;
+        border-radius: 4px;
+        border-style: none;
+        margin-bottom: 10px;
+        padding: 5px 10px;
+        background-color: rgb(41, 157, 215);
+    }
+
+    table {
+        border-collapse: collapse;
+        border: 2px solid rgb(140 140 140);
+        font-family: sans-serif;
+        font-size: 0.8rem;
+        letter-spacing: 1px;
+    }
+
+    thead {
+        color: rgb(255, 255, 255);
+        background-color: rgba(198, 202, 197, 0.958);
+    }
+
+    th,
+    td {
+        border: 1px solid rgb(160 160 160);
+        padding: 8px 10px;
+        text-align: center;
+    }
+
+    .fom1,
+    .fom2 {
+        width: 100%;
+        height: 100%;
+        display: none;
+        position: absolute;
+        align-items: center;
+        justify-content: center;
+        background-color: rgba(0, 0, 0, 0.5);
+        z-index: 9999;
+    }
+
+    form {
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        width: 300px;
+        height: 250px;
+        background-color: white;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+
+    form div {
+        margin-bottom: 10px;
+        margin-top: 10px;
+    }
+
+    .bookName,
+    .auThor,
+    .puBlish {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    form span {
+        margin-right: 10px;
+    }
+
+    input {
+        padding: 5px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+    }
+
+    input:focus {
+        outline: none;
+        border-color: #007bff;
+    }
+
+    .confirm {
+        display: flex;
+    }
+
+    .confirm button {
+        margin-left: 45px;
+        margin-right: 45px;
+        color: aliceblue;
+        padding: 5px 10px;
+        border-radius: 4px;
+        border-style: none;
+        background-color: rgb(41, 157, 215);
+    }
+</style>
+
+</html>
