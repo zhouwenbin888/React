@@ -1,7 +1,8 @@
 import { logindata } from "@/pages/Login";
-import { removeToken, request } from "@/utils";
+import { removeToken} from "@/utils";
 import { Dispatch, createSlice } from "@reduxjs/toolkit";
 import { setToken as _setToken, getToken } from "@/utils";
+import { getProfileAPI, loginAPI } from "@/apis/user";
 interface User {
     id: string;
     photo: string;
@@ -35,14 +36,14 @@ const userStore = createSlice({
 
 const fetchLogin: (loginForm: logindata) => (dispatch: Dispatch) => Promise<void> = (loginForm) => {
     return async (dispatch: Dispatch) => {
-        const res = await request.post('/authorizations', loginForm)
+        const res = await loginAPI(loginForm)
         dispatch(setToken(res.data.token))
     }
 }
 
 const fetchUser: () => (dispatch: Dispatch) => Promise<void> = () => {
     return async (dispatch: Dispatch) => {
-      const res= await request.get('/user/profile')
+      const res= await getProfileAPI()
       dispatch(setUser(res.data))
     }
 }
