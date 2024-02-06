@@ -1,13 +1,14 @@
-import { Link } from 'react-router-dom'
-import { Card, Breadcrumb, Form, Button, Radio, DatePicker, Select } from 'antd'
+import { Link, useNavigate } from 'react-router-dom'
+import { Card, Breadcrumb, Form, Button, Radio, DatePicker, Select, Popconfirm } from 'antd'
 import locale from 'antd/es/date-picker/locale/zh_CN'//引入汉化包
 import { Table, Tag, Space } from 'antd'
 import { EditOutlined, DeleteOutlined } from '@ant-design/icons'
 import img404 from '@/assets/error.png'
 import { useChannels } from '@/hooks/useChannels'
 import { useEffect, useState } from 'react'
-import { getArticleAPI } from '@/apis/article'
+import { delArticleAPI, getArticleAPI } from '@/apis/article'
 import moment from 'moment'
+import './index.scss'
 
 const { Option } = Select
 const { RangePicker } = DatePicker
@@ -18,6 +19,17 @@ export interface dataitem {
   end_pubdate: string,
   page: number,
   per_page: number
+}
+
+interface data2 {
+  comment_count: number,
+  cover: object,
+  id: string,
+  like_count: number,
+  pubdate: string,
+  read_count: number,
+  status: number,
+  title: string
 }
 interface ValueInterface {
   channel_id: string;
@@ -64,16 +76,24 @@ const Article = () => {
     },
     {
       title: '操作',
-      render: (data: any) => {
+      render: (data: data2) => {
         return (
           <Space size="middle">
-            <Button type="primary" shape="circle" icon={<EditOutlined />} />
-            <Button
-              type="primary"
-              danger
-              shape="circle"
-              icon={<DeleteOutlined />}
-            />
+            <Button type="primary" shape="circle" icon={<EditOutlined />} onClick={() => navigate(`/publish?id=${data.id}`)} />
+            <Popconfirm
+              title="删除文章"
+              description="确定删除文章吗?"
+              onConfirm={() => confirm(data)}
+              okText="Yes"
+              cancelText="No"
+            >
+              <Button
+                type="primary"
+                danger
+                shape="circle"
+                icon={<DeleteOutlined />}
+              />
+            </Popconfirm>
           </Space>
         )
       }
@@ -81,6 +101,14 @@ const Article = () => {
   ]
   // 准备表格body数据
 
+  const confirm = async (data: data2) => {
+    console.log(data)
+    await delArticleAPI(data.id)
+    setdata({
+      ...reqdata
+    })
+  }
+  const navigate = useNavigate()
   const { channels } = useChannels()
   const [list, setlist] = useState([])
   const [count, setcount] = useState(0)

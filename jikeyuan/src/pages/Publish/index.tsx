@@ -12,12 +12,12 @@ import {
   message
 } from 'antd'
 import { PlusOutlined } from '@ant-design/icons'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate, useSearchParams } from 'react-router-dom'
 import './index.scss'
 import ReactQuill from 'react-quill'
 import 'react-quill/dist/quill.snow.css'
 import { useEffect, useState } from 'react'
-import { getChannelAPI, subArticleAPI } from '@/apis/article'
+import { getArticleIdAPI, subArticleAPI, upArticleAPI } from '@/apis/article'
 import { useChannels } from '@/hooks/useChannels'
 
 const { Option } = Select
@@ -31,6 +31,9 @@ export interface article {
   },
   channel_id: number
 }
+export interface article2 extends article {
+  id: string
+}
 export interface Channel {
   id: number,
   name: string
@@ -38,6 +41,7 @@ export interface Channel {
 
 const Publish = () => {
   const { channels } = useChannels()
+  const navigate = useNavigate()
   const onfinish = (data: article) => {
     const { title, content, channel_id } = data
     const reqdata = {
@@ -50,27 +54,61 @@ const Publish = () => {
       channel_id
     }
     if (imageList.length !== type) { return message.warning('封面类型和图片不匹配') }
-    else { subArticleAPI(reqdata) }
-
+    else if (articleId !== null) {
+      upArticleAPI({ ...reqdata, id: articleId })
+      message.success('更新成功')
+      setTimeout(() => {
+        navigate('/article')
+      }, 1000)
+    }
+    else {
+      subArticleAPI(reqdata)
+      message.success('添加成功')
+      setTimeout(() => {
+        navigate('/article')
+      }, 1000)
+    }
   }
   const [imageList, setImageList] = useState<Array<any>>([]);
   const onUploadChange = (image: any) => {
     setImageList(image.fileList);
   };
   const images = imageList.map(item =>
-    item.response ? item.response.data.url : null
+    item.response ? item.response.data.url : item.url
   )
   const [type, settype] = useState(1)
   const onType = (e: RadioChangeEvent) => {
     settype(e.target.value)
   }
+  const [searchid] = useSearchParams()
+  const [form] = Form.useForm()
+  const articleId = searchid.get('id')
+  console.log(articleId)
+  useEffect(() => {
+    async function getArticleidAPI() {
+      if (articleId !== null) {
+        const res = await getArticleIdAPI(articleId)
+        const data = res.data
+        form.setFieldsValue({
+          ...data,
+          type: data.cover.type,
+        })
+        settype(data.cover.type)
+        setImageList(data.cover.images.map((url: string) => {
+          return { url }
+        }))
+      }
+    }
+    getArticleidAPI()
+  }, [articleId, form])
+
   return (
     <div className="publish">
       <Card
         title={
           <Breadcrumb items={[
             { title: <Link to={'/'}>首页</Link> },
-            { title: '发布文章' },
+            { title: `${articleId ? '编辑' : '发布'}文章` },
           ]}
           />
         }
@@ -80,6 +118,7 @@ const Publish = () => {
           labelCol={{ span: 4 }}
           wrapperCol={{ span: 16 }}
           initialValues={{ type: 1 }}
+          form={form}
         >
           <Form.Item
             label="标题"
@@ -112,6 +151,7 @@ const Publish = () => {
               onChange={onUploadChange}
               name="image"
               maxCount={type}
+              fileList={imageList}
             >
               <div style={{ marginTop: 8 }}>
                 <PlusOutlined />
