@@ -1,14 +1,17 @@
-.footer{
-    width: 100%;
-    position:fixed;
+.footer {
+  width: 100%;
+  position: fixed;
   bottom: 0;
-  
-    
 }
-.container{
-    width: 100%;
-    position:fixed;
-    bottom: 50px;
-    top: 0;
-    overflow: hidden;
+
+.container {
+  width: 100%;
+  position: fixed;
+  bottom: 50px;
+  top: 0;
+  flex: 1;
+}
+
+.layout {
+  display: flex;
 }
