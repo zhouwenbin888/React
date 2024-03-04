@@ -8,11 +8,30 @@
 </head>
 
 <body>
-    <div>nishi</div>
+    <div class="container">
+
+        <div class="left"></div>
+        <div class="main"></div>
+        <div class="right"></div>
+    </div>
+
 </body>
 <style>
-    div {
-        font: italic 700 16px 'Microsoft yahei'
+    .container {
+        display: flex;
+        height: 200px;
+    }
+
+    .left,
+    .right {
+        background-color: blue;
+        width: 200px;
+    }
+
+    .main {
+
+        background-color: aqua;
+        flex: 1;
     }
 </style>
 

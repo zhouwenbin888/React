@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div>
+        <h1>Fruits:</h1>
+        <ul>{fruitList}</ul>
+    </div>
+</body>
+<script>
+    const fruits = ['Apple', 'Banana', 'Orange'];
+
+    const fruitList = [];
+    fruits.forEach((fruit, index) => {
+        fruitList.push(<li key={index}>{fruit}</li>);
+    });
+</script>
+
+</html>

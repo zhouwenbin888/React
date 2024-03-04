@@ -139,6 +139,13 @@
       "money": -2,
       "date": "2024-01-22T16:00:00.000Z",
       "useFor": "longdistance"
+    },
+    {
+      "id": "6e82f011-061e-4067-8614-bc0692ccdf44",
+      "type": "pay",
+      "money": -3000,
+      "date": "2024-03-03T16:00:00.000Z",
+      "useFor": "longdistance"
     }
   ]
 }
