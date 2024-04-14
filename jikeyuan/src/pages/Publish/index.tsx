@@ -147,7 +147,7 @@ const Publish = () => {
             {type > 0 && <Upload
               listType="picture-card"//文件框外观样式
               showUploadList//控制显示上传列表
-              action={'http://geek.itheima.net/v1_0/upload'}
+              action={'https://geek.itheima.net/v1_0/upload'}
               onChange={onUploadChange}
               name="image"
               maxCount={type}

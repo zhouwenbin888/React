@@ -102,7 +102,6 @@ const Article = () => {
   // 准备表格body数据
 
   const confirm = async (data: data2) => {
-    console.log(data)
     await delArticleAPI(data.id)
     setdata({
       ...reqdata
