@@ -36,12 +36,12 @@ const GeekLayout = () => {
   const location = useLocation()
   const selected = location.pathname
   const dispatch = useAppDispatch()
-  const name =useAppSelector(state=>state.user.user.name)
+  const name = useAppSelector(state => state.user.user.name)
   useEffect(() => {
-   dispatch(fetchUser())
-  },[dispatch])
+    dispatch(fetchUser())
+  }, [dispatch])
 
-  const onconfirm=()=>{
+  const onconfirm = () => {
     dispatch(exitUser())
     navigate('/login')
   }
