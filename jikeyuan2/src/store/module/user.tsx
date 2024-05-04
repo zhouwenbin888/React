@@ -2,7 +2,7 @@ import { logindata } from "@/pages/Login";
 import { removeToken } from "@/utils";
 import { Dispatch, createSlice } from "@reduxjs/toolkit";
 import { setToken as _setToken, getToken } from "@/utils";
-import { getProfileAPI, loginAPI } from "@/apis/user";
+import axios from "axios";
 interface User {
     id: string;
     photo: string;
@@ -36,15 +36,24 @@ const userStore = createSlice({
 
 const fetchLogin: (loginForm: logindata) => (dispatch: Dispatch) => Promise<void> = (loginForm) => {
     return async (dispatch: Dispatch) => {
-        const res = await loginAPI(loginForm)
-        dispatch(setToken(res.data.token))
+        await axios.post('http://geek.itheima.net/v1_0/authorizations', loginForm).then(res => {
+            dispatch(setToken(res.data.data.token))
+        })
     }
 }
 
 const fetchUser: () => (dispatch: Dispatch) => Promise<void> = () => {
+    const token = getToken()
+    const config = {
+        headers: {
+            Authorization: `Bearer ${token}`
+        }
+    };
     return async (dispatch: Dispatch) => {
-        const res = await getProfileAPI()
-        dispatch(setUser(res.data))
+        await axios.get('http://geek.itheima.net/v1_0/user/profile', config).then(res =>
+            dispatch(setUser(res.data.data))
+        )
+
     }
 }
 
