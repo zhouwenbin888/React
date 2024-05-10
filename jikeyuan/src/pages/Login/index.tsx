@@ -1,6 +1,6 @@
 import './index.scss'
 import { Card, Form, Input, Button, message } from 'antd'
-import logo from '@/assets/logo.webp'
+import logo from '@/assets/login.png'
 import { useAppDispatch } from '@/store/hook';
 import { fetchLogin } from '@/store/module/user';
 import { useNavigate } from 'react-router-dom';

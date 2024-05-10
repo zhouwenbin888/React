@@ -3,7 +3,7 @@ import { Card, Breadcrumb, Form, Button, Radio, DatePicker, Select, Popconfirm }
 import locale from 'antd/es/date-picker/locale/zh_CN'//引入汉化包
 import { Table, Tag, Space } from 'antd'
 import { EditOutlined, DeleteOutlined } from '@ant-design/icons'
-import img404 from '@/assets/error.webp'
+import img404 from '@/assets/error.png'
 import { useChannels } from '@/hooks/useChannels'
 import { useEffect, useState } from 'react'
 import { delArticleAPI, getArticleAPI } from '@/apis/article'
