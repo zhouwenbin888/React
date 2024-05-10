@@ -48,7 +48,7 @@ module.exports = {
                 htmlWebpackPlugin.options.cdn = cdn;
             }
             if (process.env.NODE_ENV === 'production') {
-                // webpackConfig.plugins.push(new BundleAnalyzerPlugin());
+                webpackConfig.plugins.push(new BundleAnalyzerPlugin());
 
                 // 压缩 CSS
                 webpackConfig.plugins.push(
