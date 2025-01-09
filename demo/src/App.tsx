@@ -1,34 +1,57 @@
-import { useReducer } from "react";
+import React, { useEffect } from "react";
+import { create } from "zustand";
 
-type Action = { type: 'add' } | { type: 'del' };
+const URL = 'http://geek.itheima.net/v1_0/channels'
 
-function reducer(state: number, action: Action) {
-  switch (action.type) {
-    case 'add':
-      return state + 1;
-    case 'del':
-      return state - 1;
-    default:
-      return state;
-  }
+
+interface State {
+  count: number;
+  increase: () => void;
+  channelList: { id: number, name: string }[];
+  fetchList: () => Promise<void>;
 }
+const createCounterStore = create<State>((set) => ({
+  count: 0,
+  increase: () => {
+    set((state) => ({ count: state.count + 1 }));
+  },
+  channelList: [],
+  fetchList: async () => {
+    const res = await fetch(URL)
+    const resdata = await res.json()
+    set({ channelList: resdata.data.channels });
+  }
+}));
+
+const useStore = create<State>((set) => ({
+  count: 0,
+  increase: () => {
+    set((state) => ({ count: state.count + 1 }));
+  },
+  channelList: [],
+  fetchList: async () => {
+    const res = await fetch(URL)
+    const resdata = await res.json()
+    set({ channelList: resdata.data.channels });
+  }
+}));
 
 function App() {
-  const [state, dispatch] = useReducer(reducer, 0);
+  const { count, increase, fetchList, channelList } = useStore(state => ({ count: state.count, increase: state.increase, fetchList: state.fetchList, channelList: state.channelList }));
 
-  const handleAdd = () => {
-    dispatch({ type: 'add' });
-  };
-
-  const handleDel = () => {
-    dispatch({ type: 'del' });
-  };
+  useEffect(() => {
+    fetchList();
+  }, []);
 
   return (
     <div className="App">
-      <h1>Count: {state}</h1>
-      <button onClick={handleAdd}>Add</button>
-      <button onClick={handleDel}>Del</button>
+      <h1>{count}</h1>
+      <button onClick={increase}>Increase Count</button>
+      <ul>
+        {channelList.map((channel) => (
+          <li key={channel.id}>{channel.name}</li>
+        ))}
+      </ul>
     </div>
   );
 }
